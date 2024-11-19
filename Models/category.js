@@ -1,11 +1,9 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
-var schema = new mongoose.Schema(
-    {
-        category: String
-    }
-);
+var schema = new mongoose.Schema({
+  category: String
+});
 
-var Category = mongoose.model('Category', schema, 'category');
+var Category = mongoose.model("Category", schema, "category");
 
 module.exports = Category;

@@ -1,12 +1,10 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
-var schema = new mongoose.Schema(
-    {
-        fullname: String,
-        phone: String,
-    }
-);
+var schema = new mongoose.Schema({
+  fullname: String,
+  phone: String
+});
 
-var Note = mongoose.model('Note', schema, 'note');
+var Note = mongoose.model("Note", schema, "note");
 
 module.exports = Note;
