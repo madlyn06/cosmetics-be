@@ -95,7 +95,7 @@ module.exports.update = async (req, res) => {
       c.id !== req.body.id
     );
   });
-
+  console.log(productFilter, "productFilter");
   if (productFilter.length > 0) {
     res.json({ msg: "Sản phẩm đã tồn tại" });
   } else {
@@ -103,47 +103,21 @@ module.exports.update = async (req, res) => {
       return a.toUpperCase();
     });
 
-    if (req.files) {
-      var fileImage = req.files.file;
-
-      var fileName = fileImage.name;
-
-      var fileProduct = "/img/" + fileName;
-
-      await Product.updateOne(
-        { _id: req.body.id },
-        {
-          name_product: req.body.name,
-          price_product: req.body.price,
-          id_category: req.body.category,
-          // number: req.body.number,
-          describe: req.body.description,
-          gender: req.body.gender,
-          image: fileProduct
-        },
-        function (err, res) {
-          if (err) return res.json({ msg: err });
-        }
-      );
-      res.json({ msg: "Bạn đã update thành công" });
-
-      fileImage.mv("./public/img/" + fileName);
-    } else {
-      await Product.updateOne(
-        { _id: req.body.id },
-        {
-          name_product: req.body.name,
-          price_product: req.body.price,
-          id_category: req.body.category,
-          // number: req.body.number,
-          describe: req.body.description,
-          gender: req.body.gender
-        },
-        function (err, res) {
-          if (err) return res.json({ msg: err });
-        }
-      );
-      res.json({ msg: "Bạn đã update thành công" });
-    }
+    await Product.updateOne(
+      { _id: req.body.id },
+      {
+        name_product: req.body.name,
+        price_product: req.body.price,
+        id_category: req.body.category,
+        // number: req.body.number,
+        describe: req.body.description,
+        gender: req.body.gender,
+        image: req?.body?.file || ""
+      },
+      function (err, res) {
+        if (err) return res.json({ msg: err });
+      }
+    );
+    res.json({ msg: "Bạn đã update thành công" });
   }
 };
