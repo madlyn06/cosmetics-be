@@ -49,7 +49,7 @@ module.exports.create = async (req, res) => {
       return a.toUpperCase();
     });
     newcategory.category = req.query.name;
-
+    newcategory.gender = req.query?.gender || "1";
     newcategory.save();
     res.json({ msg: "Bạn đã thêm thành công" });
   }
