@@ -9,7 +9,8 @@ var schema = new mongoose.Schema({
   price_product: String,
   image: String,
   describe: String,
-  gender: String
+  gender: String,
+  amount: Number
   // number: Number,
 });
 

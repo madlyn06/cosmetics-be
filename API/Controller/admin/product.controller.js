@@ -58,7 +58,7 @@ module.exports.create = async (req, res) => {
     // newProduct.number = req.body.number
     newProduct.describe = req.body.description;
     newProduct.gender = req.body.gender;
-
+    newProduct.amount = req.body.number;
     if (req.body.file) {
       newProduct.image = req.body.file;
     } else newProduct.image = "http://localhost:8000/img/nophoto.jpg";
@@ -95,7 +95,6 @@ module.exports.update = async (req, res) => {
       c.id !== req.body.id
     );
   });
-  console.log(productFilter, "productFilter");
   if (productFilter.length > 0) {
     res.json({ msg: "Sản phẩm đã tồn tại" });
   } else {
@@ -112,6 +111,7 @@ module.exports.update = async (req, res) => {
         // number: req.body.number,
         describe: req.body.description,
         gender: req.body.gender,
+        amount: req.body.number,
         image: req?.body?.file || ""
       },
       function (err, res) {
