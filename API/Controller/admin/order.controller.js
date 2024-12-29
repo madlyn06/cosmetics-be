@@ -2,6 +2,7 @@ const Order = require("../../../Models/order");
 const Detail_History = require("../../../Models/detail_order");
 const Payment = require("../../../Models/payment");
 const Delivery = require("../../../Models/delivery");
+const Detail_Order = require("../../../Models/detail_order");
 
 module.exports.index = async (req, res) => {
   let page = parseInt(req.query.page) || 1;
@@ -146,7 +147,7 @@ module.exports.completeOrder = async (req, res) => {
   let money = 0;
 
   const getDate = req.query.getDate;
-    
+
   const perPage = parseInt(req.query.limit) || 8;
 
   let start = (page - 1) * perPage;
@@ -188,4 +189,77 @@ module.exports.completeOrder = async (req, res) => {
       totalMoney: money
     });
   }
+};
+
+module.exports.statistical = async (req, res) => {
+  const start = req.query.start;
+  const end = req.query.end;
+  const orders = await Order.aggregate([
+    {
+      $addFields: {
+        create_time: {
+          $dateFromString: {
+            dateString: "$create_time",
+            format: "%d/%m/%Y"
+          }
+        }
+      }
+    },
+    {
+      $match: {
+        create_time: {
+          $gte: new Date(start),
+          $lte: new Date(end)
+        }
+      }
+    },
+    {
+      $project: {
+        yearMonth: {
+          $dateToString: {
+            format: "%Y-%m",
+            date: "$create_time"
+          }
+        },
+        data: "$$ROOT"
+      }
+    },
+    {
+      $group: {
+        _id: "$yearMonth",
+        documents: {
+          $push: "$data"
+        },
+        totalSum: {
+          $sum: "$data.total"
+        }
+      }
+    }
+  ]);
+  res.json(orders);
+};
+
+module.exports.month = async (req, res) => {
+  const orders = await Detail_Order.aggregate([
+    {
+      $group: {
+        _id: "$id_product",
+        totalCount: {
+          $sum: "$count"
+        },
+        name: {
+          $first: "$name_product"
+        }
+      }
+    },
+    {
+      $sort: {
+        totalCount: -1
+      }
+    },
+    {
+      $limit: 5
+    }
+  ]);
+  res.json(orders);
 };

@@ -1,20 +1,22 @@
-var express = require('express')
+var express = require("express");
 
-var router = express.Router()
+var router = express.Router();
 
-const Order = require('../../Controller/admin/order.controller')
+const Order = require("../../Controller/admin/order.controller");
 
-router.get('/', Order.index)
+router.get("/", Order.index);
 
-router.get('/detail/:id', Order.details)
+router.get("/detail/:id", Order.details);
 
-router.get('/detailorder/:id', Order.detailOrder)
+router.get("/detailorder/:id", Order.detailOrder);
 
-router.patch('/confirmorder', Order.confirmOrder)
-router.patch('/cancelorder', Order.cancelOrder)
-router.patch('/delivery', Order.delivery)
-router.patch('/confirmdelivery', Order.confirmDelivery)
+router.patch("/confirmorder", Order.confirmOrder);
+router.patch("/cancelorder", Order.cancelOrder);
+router.patch("/delivery", Order.delivery);
+router.patch("/confirmdelivery", Order.confirmDelivery);
 
-router.get('/completeOrder', Order.completeOrder)
+router.get("/completeOrder", Order.completeOrder);
+router.get("/statistical", Order.statistical);
+router.get("/month", Order.month);
 
-module.exports = router
+module.exports = router;
